@@ -1,69 +1,169 @@
-# Welcome to your Lovable project
+Welcome to The Invisible Job Board
+Project Overview
+The Invisible Job Board is a highly interactive job portal where job listings are hidden by default and only revealed when users input their skills. The platform dynamically filters and displays job postings based on the user's skill set, prioritizes matches with 80%+ relevance, and ensures a seamless user experience with smooth animations, predictive assistance, and mobile responsiveness.
 
-## Project info
+Key Features
+Complete Concealment:
 
-**URL**: https://lovable.dev/projects/e2702e77-978c-468b-b93f-e154a02d47cc
+Job listings are hidden by default.
 
-## How can I edit this code?
+Users must input at least one skill to view job postings.
 
-There are several ways of editing your application.
+Skill-Driven Discovery:
 
-**Use Lovable**
+Users manually input their skills in a responsive input field.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e2702e77-978c-468b-b93f-e154a02d47cc) and start prompting.
+As skills are entered, job postings matching at least one skill dynamically appear.
 
-Changes made via Lovable will be committed automatically to this repo.
+Relevance-Based Prioritization:
 
-**Use your preferred IDE**
+Jobs with 80%+ alignment with the user's skill set are marked as "Top Match."
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Job listings are sorted by relevance, with the most relevant jobs appearing first.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Adaptive Ordering Mechanism:
 
-Follow these steps:
+Job postings are dynamically reordered based on the user's input.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+Predictive Assistance:
+
+The input field suggests skills as the user types, using the O*NET Skills API.
+
+Smooth Visual Transitions:
+
+Job postings gradually appear with elegant animations using Framer Motion.
+
+Mobile Responsiveness:
+
+The platform is optimized for all screen sizes, especially mobile devices.
+
+Technologies Used
+This project is built with the following technologies:
+
+Frontend Framework:
+
+React.js (JavaScript) for dynamic UI and state management.
+
+UI Styling:
+
+Tailwind CSS for utility-first, responsive styling.
+
+Animations:
+
+Framer Motion for smooth and elegant animations.
+
+APIs:
+
+Indeed API for fetching real-time job postings.
+
+O*NET Skills API for skill suggestions and relevance matching.
+
+JavaScript Libraries:
+
+Lodash.js for filtering, sorting, and data manipulation.
+
+Deployment:
+
+Vercel for hosting and deployment.
+
+How to Edit This Code
+There are several ways to edit and run this project:
+
+1. Use Lovable
+Visit the Lovable Project and start prompting.
+
+Changes made via Lovable will be committed automatically to this repository.
+
+2. Use Your Preferred IDE
+If you want to work locally using your own IDE, follow these steps:
+
+Clone the Repository:
+
+sh
+Copy
 git clone <YOUR_GIT_URL>
+Navigate to the Project Directory:
 
-# Step 2: Navigate to the project directory.
+sh
+Copy
 cd <YOUR_PROJECT_NAME>
+Install Dependencies:
 
-# Step 3: Install the necessary dependencies.
-npm i
+sh
+Copy
+npm install
+Start the Development Server:
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+sh
+Copy
 npm run dev
-```
+Open your browser and visit http://localhost:5173 to view the application.
 
-**Edit a file directly in GitHub**
+3. Edit Directly in GitHub
+Navigate to the desired file(s) in the repository.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Click the Edit button (pencil icon) at the top right of the file view.
 
-**Use GitHub Codespaces**
+Make your changes and commit them.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+4. Use GitHub Codespaces
+Navigate to the main page of your repository.
 
-## What technologies are used for this project?
+Click on the Code button (green button) near the top right.
 
-This project is built with .
+Select the Codespaces tab.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Click on New codespace to launch a new Codespace environment.
 
-## How can I deploy this project?
+Edit files directly within the Codespace and commit/push your changes when done.
 
-Simply open [Lovable](https://lovable.dev/projects/e2702e77-978c-468b-b93f-e154a02d47cc) and click on Share -> Publish.
+How to Deploy This Project
+Option 1: Deploy with Lovable
+Open Lovable.
 
-## I want to use a custom domain - is that possible?
+Click on Share -> Publish to deploy the project.
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+Option 2: Deploy with Vercel
+Install the Vercel CLI:
+
+sh
+Copy
+npm install -g vercel
+Deploy the project:
+
+sh
+Copy
+vercel
+Follow the prompts to complete the deployment.
+
+Custom Domain (Not Supported Yet)
+Lovable does not currently support custom domains. If you want to deploy your project under your own domain, we recommend using Netlify. For more details, visit our docs: Custom Domains.
+
+Project Structure
+Here’s an overview of the project structure:
+
+Copy
+src/
+├── components/          # Reusable React components
+│   ├── Header.tsx       # Header component
+│   ├── Footer.tsx       # Footer component
+│   ├── SkillInput.tsx   # Skill input field with predictive suggestions
+│   ├── JobList.tsx      # Job listing component
+│   └── JobCard.tsx      # Individual job card component
+├── data/                # Mock data for jobs and skills
+│   ├── mockJobs.ts      # Mock job listings
+│   └── mockSkills.ts    # Mock skill suggestions
+├── hooks/               # Custom React hooks
+│   └── useLocalStorage.ts # Hook for managing localStorage
+├── services/            # API service functions
+│   └── apiService.ts    # Functions for fetching jobs and skills
+├── utils/               # Utility functions
+│   └── jobMatching.ts   # Logic for matching jobs to skills
+├── App.tsx              # Main application component
+└── main.tsx             # Entry point for the app
+Final Deliverables
+Deployed Project Link (hosted on Vercel).
+
+Source Code (uploaded to GitHub).
+
+Documentation (README file explaining the project, setup instructions, and features).
