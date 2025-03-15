@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const Footer: React.FC = () => {
   return (
     <motion.footer
-      className="py-8 md:py-10 border-t border-border/50 mt-auto"
+      className="py-8 md:py-10 border-t border-border/40 mt-auto"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.8, duration: 0.5 }}
@@ -17,9 +17,9 @@ const Footer: React.FC = () => {
           </div>
           
           <div className="flex items-center space-x-6">
-            <a href="#" className="hover:text-foreground transition-colors">About</a>
-            <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
-            <a href="#" className="hover:text-foreground transition-colors">Contact</a>
+            <a href="#" className="hover:text-foreground transition-colors duration-200">About</a>
+            <a href="#" className="hover:text-foreground transition-colors duration-200">Privacy</a>
+            <a href="#" className="hover:text-foreground transition-colors duration-200">Contact</a>
           </div>
         </div>
       </div>

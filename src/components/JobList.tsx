@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Job } from "../data/mockJobs";
 import JobCard from "./JobCard";
 import { getMatchingJobs } from "../utils/jobMatching";
+import { Search, AlertCircle } from "lucide-react";
 
 interface JobListProps {
   jobs: Job[];
@@ -23,7 +24,7 @@ const JobList: React.FC<JobListProps> = ({ jobs, selectedSkills }) => {
         const filtered = getMatchingJobs(jobs, selectedSkills);
         setMatchedJobs(filtered);
         setIsLoading(false);
-      }, 500);
+      }, 600);
       
       return () => clearTimeout(timer);
     } else {
@@ -35,32 +36,45 @@ const JobList: React.FC<JobListProps> = ({ jobs, selectedSkills }) => {
   if (selectedSkills.length === 0) {
     return (
       <motion.div 
-        className="text-center py-16 md:py-24 px-6"
+        className="text-center py-20 md:py-28 px-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
         <div className="max-w-md mx-auto">
-          <div className="glass-darker rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-            <svg 
-              width="40" 
-              height="40" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="1.5" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
+          <motion.div 
+            className="glass-darker rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6"
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: "0 5px 15px rgba(0, 0, 0, 0.05)",
+              transition: { duration: 0.2 }
+            }}
+          >
+            <Search 
+              size={40}
               className="text-muted-foreground"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
-          </div>
-          <h2 className="text-xl font-semibold mb-3">Jobs are invisible</h2>
-          <p className="text-muted-foreground text-sm">
+              strokeWidth={1.5}
+            />
+          </motion.div>
+          <motion.h2 
+            className="text-xl font-semibold mb-3"
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+          >
+            Jobs are invisible
+          </motion.h2>
+          <motion.p 
+            className="text-muted-foreground text-sm"
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+          >
             Enter your skills above to reveal matching job opportunities tailored to your expertise.
-          </p>
+          </motion.p>
         </div>
       </motion.div>
     );
@@ -72,9 +86,12 @@ const JobList: React.FC<JobListProps> = ({ jobs, selectedSkills }) => {
       <div className="max-w-3xl mx-auto px-6 md:px-0">
         <div className="grid gap-4 md:gap-6">
           {[1, 2, 3].map((i) => (
-            <div 
+            <motion.div 
               key={i} 
-              className="glass-card rounded-xl h-[200px] shimmer-effect animate-pulse-soft"
+              className="glass-card rounded-xl h-[200px] shimmer-effect"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 0.7, y: 0 }}
+              transition={{ duration: 0.4, delay: i * 0.1 }}
             />
           ))}
         </div>
@@ -92,26 +109,34 @@ const JobList: React.FC<JobListProps> = ({ jobs, selectedSkills }) => {
         transition={{ duration: 0.5 }}
       >
         <div className="max-w-md mx-auto">
-          <div className="glass-darker rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-            <svg 
-              width="40" 
-              height="40" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="1.5" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
+          <motion.div 
+            className="glass-darker rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6"
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <AlertCircle
+              size={40}
               className="text-muted-foreground"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <path d="M8 12h8" />
-            </svg>
-          </div>
-          <h2 className="text-xl font-semibold mb-3">No matching jobs found</h2>
-          <p className="text-muted-foreground text-sm">
+              strokeWidth={1.5}
+            />
+          </motion.div>
+          <motion.h2 
+            className="text-xl font-semibold mb-3"
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            No matching jobs found
+          </motion.h2>
+          <motion.p 
+            className="text-muted-foreground text-sm"
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
             Try adding different skills or removing some to broaden your search.
-          </p>
+          </motion.p>
         </div>
       </motion.div>
     );

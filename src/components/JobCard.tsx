@@ -24,17 +24,25 @@ const JobCard: React.FC<JobCardProps> = ({ job, index }) => {
         delay: index * 0.1,
         ease: [0.25, 0.1, 0.25, 1.0]
       }}
-      whileHover={{ y: -4, transition: { duration: 0.2 } }}
+      whileHover={{ 
+        y: -4, 
+        transition: { duration: 0.2 } 
+      }}
     >
       <div className="p-6">
         <div className="flex justify-between items-start mb-3">
-          <h3 className="font-semibold text-lg">{job.title}</h3>
+          <h3 className="font-semibold text-lg tracking-tight">{job.title}</h3>
           
           {isTop && (
-            <span className="bg-primary/10 text-primary text-xs font-medium px-2 py-0.5 rounded-full flex items-center">
+            <motion.span 
+              className="bg-primary/10 text-primary text-xs font-medium px-2 py-0.5 rounded-full flex items-center"
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2 + (index * 0.1) }}
+            >
               <Star className="w-3 h-3 mr-1" fill="currentColor" stroke="none" />
               Top Match
-            </span>
+            </motion.span>
           )}
         </div>
         
@@ -61,21 +69,36 @@ const JobCard: React.FC<JobCardProps> = ({ job, index }) => {
           </div>
         </div>
         
-        <p className="text-sm mb-4">{job.description}</p>
+        <p className="text-sm mb-4 text-foreground/90">{job.description}</p>
         
-        <div className="flex flex-wrap gap-1.5">
-          {job.skills.slice(0, 5).map((skill) => (
-            <span 
+        <motion.div 
+          className="flex flex-wrap gap-1.5"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 + (index * 0.1) }}
+        >
+          {job.skills.slice(0, 5).map((skill, skillIndex) => (
+            <motion.span 
               key={skill} 
               className="skill-tag"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 + (index * 0.05) + (skillIndex * 0.03) }}
             >
               {skill}
-            </span>
+            </motion.span>
           ))}
           {job.skills.length > 5 && (
-            <span className="skill-tag">+{job.skills.length - 5} more</span>
+            <motion.span 
+              className="skill-tag"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 + (index * 0.05) + (5 * 0.03) }}
+            >
+              +{job.skills.length - 5} more
+            </motion.span>
           )}
-        </div>
+        </motion.div>
       </div>
     </motion.div>
   );

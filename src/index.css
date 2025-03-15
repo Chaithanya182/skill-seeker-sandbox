@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
+    --background: 210 45% 98%;
     --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
@@ -49,34 +49,37 @@
 
   body {
     @apply bg-background text-foreground min-h-screen;
-    background-image: radial-gradient(at 100% 0%, hsla(210, 100%, 97%, 0.3) 0px, transparent 75%), 
-                      radial-gradient(at 0% 100%, hsla(210, 100%, 97%, 0.3) 0px, transparent 75%);
+    background-image: radial-gradient(at 100% 0%, hsla(210, 100%, 97%, 0.4) 0px, transparent 70%), 
+                      radial-gradient(at 0% 100%, hsla(210, 100%, 97%, 0.4) 0px, transparent 70%);
   }
 }
 
 @layer components {
   .glass {
-    @apply bg-white/60 backdrop-blur-xl border border-white/20 shadow-sm;
+    @apply bg-white/70 backdrop-blur-xl border border-white/30 shadow-sm;
   }
   
   .glass-darker {
-    @apply bg-white/80 backdrop-blur-xl border border-white/40 shadow-sm;
+    @apply bg-white/85 backdrop-blur-xl border border-white/40 shadow-sm;
   }
   
   .glass-card {
-    @apply bg-white/80 backdrop-blur-xl border border-white/40 shadow-sm hover:shadow-md transition-all duration-300;
+    @apply bg-white/85 backdrop-blur-xl border border-white/40 shadow-sm 
+           hover:shadow-md transition-all duration-300 hover:translate-y-[-2px];
   }
   
   .top-match {
-    @apply border-primary/30 bg-primary/[0.03] shadow-sm shadow-primary/5;
+    @apply border-primary/40 bg-primary/[0.04] shadow-sm shadow-primary/10;
   }
   
   .skill-tag {
-    @apply bg-secondary text-foreground/80 text-xs font-medium py-1 px-2.5 rounded-full inline-flex items-center gap-1.5 transition-all;
+    @apply bg-secondary/80 text-foreground/80 text-xs font-medium py-1 px-2.5 rounded-full 
+           inline-flex items-center gap-1.5 transition-all hover:bg-secondary;
   }
   
   .btn-ghost {
-    @apply rounded-full px-3 py-1.5 text-sm font-medium transition-all duration-200 hover:bg-secondary;
+    @apply rounded-full px-3 py-1.5 text-sm font-medium transition-all duration-200 
+           hover:bg-secondary;
   }
   
   .shimmer-effect {
@@ -86,8 +89,9 @@
   .shimmer-effect::after {
     content: "";
     @apply absolute top-0 left-0 w-full h-full;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
     background-size: 200% 100%;
     animation: shimmer 2s infinite linear;
   }
 }
+

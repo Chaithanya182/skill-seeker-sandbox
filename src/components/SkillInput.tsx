@@ -87,10 +87,10 @@ const SkillInput: React.FC<SkillInputProps> = ({ selectedSkills, setSelectedSkil
       className="w-full max-w-3xl mx-auto mb-10 md:mb-12"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.6, duration: 0.5 }}
+      transition={{ delay: 0.3, duration: 0.6, ease: [0.25, 0.1, 0.25, 1.0] }}
       ref={containerRef}
     >
-      <div className="glass rounded-2xl p-2 relative">
+      <div className="glass rounded-2xl p-2 relative hover:shadow-md transition-shadow duration-300">
         <div className="flex items-center px-3 py-1">
           <Search className="text-muted-foreground w-5 h-5 mr-2 flex-shrink-0" />
           
@@ -104,12 +104,14 @@ const SkillInput: React.FC<SkillInputProps> = ({ selectedSkills, setSelectedSkil
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.8, opacity: 0 }}
                   transition={{ duration: 0.2 }}
+                  layout
                 >
                   {skill}
                   <button 
                     type="button"
                     onClick={() => removeSkill(skill)}
                     className="ml-1 text-foreground/60 hover:text-foreground"
+                    aria-label={`Remove ${skill}`}
                   >
                     <X className="w-3 h-3" />
                   </button>
@@ -131,13 +133,16 @@ const SkillInput: React.FC<SkillInputProps> = ({ selectedSkills, setSelectedSkil
           </div>
           
           {selectedSkills.length > 0 && (
-            <button
+            <motion.button
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
               type="button"
               onClick={() => setSelectedSkills([])}
               className="text-sm text-muted-foreground hover:text-foreground px-2 py-1 rounded-md transition-colors"
             >
               Clear all
-            </button>
+            </motion.button>
           )}
         </div>
         
@@ -145,19 +150,26 @@ const SkillInput: React.FC<SkillInputProps> = ({ selectedSkills, setSelectedSkil
         <AnimatePresence>
           {isFocused && suggestions.length > 0 && (
             <motion.div
-              className="absolute left-0 right-0 top-full mt-1 bg-white rounded-xl shadow-lg z-10 overflow-hidden glass-darker"
+              className="absolute left-0 right-0 top-full mt-1 rounded-xl shadow-lg z-10 overflow-hidden glass-darker"
               initial={{ opacity: 0, y: -10, height: 0 }}
               animate={{ opacity: 1, y: 0, height: "auto" }}
               exit={{ opacity: 0, y: -10, height: 0 }}
               transition={{ duration: 0.2 }}
             >
               <ul className="py-1">
-                {suggestions.map((suggestion) => (
+                {suggestions.map((suggestion, idx) => (
                   <motion.li
                     key={suggestion}
-                    className="px-4 py-2 hover:bg-secondary cursor-pointer text-sm flex items-center"
+                    className="px-4 py-2 hover:bg-secondary/80 cursor-pointer text-sm flex items-center"
                     onClick={() => handleSuggestionClick(suggestion)}
-                    whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
+                    initial={{ opacity: 0, x: -5 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.05, duration: 0.2 }}
+                    whileHover={{ 
+                      backgroundColor: "rgba(0, 0, 0, 0.05)",
+                      x: 2,
+                      transition: { duration: 0.1 }
+                    }}
                   >
                     <Plus className="w-3 h-3 mr-2 text-primary" />
                     {suggestion}
@@ -170,17 +182,33 @@ const SkillInput: React.FC<SkillInputProps> = ({ selectedSkills, setSelectedSkil
       </div>
       
       {selectedSkills.length === 0 ? (
-        <p className="text-center text-sm text-muted-foreground mt-4 animate-pulse-soft">
+        <motion.p 
+          className="text-center text-sm text-muted-foreground mt-4"
+          initial={{ opacity: 0 }}
+          animate={{ 
+            opacity: [0.6, 0.9, 0.6], 
+            transition: { 
+              repeat: Infinity, 
+              duration: 2,
+              ease: "easeInOut"
+            } 
+          }}
+        >
           Enter your skills to discover matching job opportunities
-        </p>
+        </motion.p>
       ) : (
-        <p className="text-center text-sm text-muted-foreground mt-4">
+        <motion.p 
+          className="text-center text-sm text-muted-foreground mt-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
           {selectedSkills.length === 10 ? (
             "Maximum skills reached (10)"
           ) : (
             `Showing jobs matching ${selectedSkills.length} skill${selectedSkills.length === 1 ? "" : "s"}`
           )}
-        </p>
+        </motion.p>
       )}
     </motion.div>
   );
