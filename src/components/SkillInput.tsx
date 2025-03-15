@@ -1,8 +1,7 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Plus, Search } from "lucide-react";
-import { mockSkills } from "../data/mockSkills";
+import { fetchSkillSuggestions } from "../services/apiService";
 import _ from "lodash";
 
 interface SkillInputProps {
@@ -14,23 +13,41 @@ const SkillInput: React.FC<SkillInputProps> = ({ selectedSkills, setSelectedSkil
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isFocused, setIsFocused] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   
+  // Debounced function to fetch skill suggestions
+  const debouncedFetchSuggestions = useRef(
+    _.debounce(async (value: string) => {
+      if (value.trim()) {
+        setIsLoading(true);
+        try {
+          const fetchedSuggestions = await fetchSkillSuggestions(value);
+          setSuggestions(
+            fetchedSuggestions.filter(skill => !selectedSkills.includes(skill))
+          );
+        } catch (error) {
+          console.error("Error fetching suggestions:", error);
+          setSuggestions([]);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setSuggestions([]);
+      }
+    }, 300)
+  ).current;
+  
   // Update suggestions when input value changes
   useEffect(() => {
-    if (inputValue.trim()) {
-      const lowerInput = inputValue.toLowerCase();
-      const filteredSkills = mockSkills.filter(
-        skill => 
-          skill.toLowerCase().includes(lowerInput) && 
-          !selectedSkills.includes(skill)
-      );
-      setSuggestions(filteredSkills.slice(0, 5));
-    } else {
-      setSuggestions([]);
-    }
-  }, [inputValue, selectedSkills]);
+    debouncedFetchSuggestions(inputValue);
+    
+    // Clean up the debounced function on component unmount
+    return () => {
+      debouncedFetchSuggestions.cancel();
+    };
+  }, [inputValue, selectedSkills, debouncedFetchSuggestions]);
   
   // Handle adding a skill
   const addSkill = (skill: string) => {
@@ -148,7 +165,7 @@ const SkillInput: React.FC<SkillInputProps> = ({ selectedSkills, setSelectedSkil
         
         {/* Skill suggestions */}
         <AnimatePresence>
-          {isFocused && suggestions.length > 0 && (
+          {isFocused && (suggestions.length > 0 || isLoading) && (
             <motion.div
               className="absolute left-0 right-0 top-full mt-1 rounded-xl shadow-lg z-10 overflow-hidden glass-darker"
               initial={{ opacity: 0, y: -10, height: 0 }}
@@ -157,24 +174,30 @@ const SkillInput: React.FC<SkillInputProps> = ({ selectedSkills, setSelectedSkil
               transition={{ duration: 0.2 }}
             >
               <ul className="py-1">
-                {suggestions.map((suggestion, idx) => (
-                  <motion.li
-                    key={suggestion}
-                    className="px-4 py-2 hover:bg-secondary/80 cursor-pointer text-sm flex items-center"
-                    onClick={() => handleSuggestionClick(suggestion)}
-                    initial={{ opacity: 0, x: -5 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: idx * 0.05, duration: 0.2 }}
-                    whileHover={{ 
-                      backgroundColor: "rgba(0, 0, 0, 0.05)",
-                      x: 2,
-                      transition: { duration: 0.1 }
-                    }}
-                  >
-                    <Plus className="w-3 h-3 mr-2 text-primary" />
-                    {suggestion}
-                  </motion.li>
-                ))}
+                {isLoading ? (
+                  <li className="px-4 py-2 text-sm text-muted-foreground">
+                    Loading suggestions...
+                  </li>
+                ) : suggestions.length > 0 ? (
+                  suggestions.map((suggestion, idx) => (
+                    <motion.li
+                      key={suggestion}
+                      className="px-4 py-2 hover:bg-secondary/80 cursor-pointer text-sm flex items-center"
+                      onClick={() => handleSuggestionClick(suggestion)}
+                      initial={{ opacity: 0, x: -5 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.05, duration: 0.2 }}
+                      whileHover={{ 
+                        backgroundColor: "rgba(0, 0, 0, 0.05)",
+                        x: 2,
+                        transition: { duration: 0.1 }
+                      }}
+                    >
+                      <Plus className="w-3 h-3 mr-2 text-primary" />
+                      {suggestion}
+                    </motion.li>
+                  ))
+                ) : null}
               </ul>
             </motion.div>
           )}

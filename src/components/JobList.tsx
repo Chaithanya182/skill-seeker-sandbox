@@ -4,29 +4,27 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Job } from "../data/mockJobs";
 import JobCard from "./JobCard";
 import { getMatchingJobs } from "../utils/jobMatching";
-import { Search, AlertCircle } from "lucide-react";
+import { Search, AlertCircle, Loader2 } from "lucide-react";
 
 interface JobListProps {
   jobs: Job[];
   selectedSkills: string[];
+  isLoading?: boolean;
+  error?: string | null;
 }
 
-const JobList: React.FC<JobListProps> = ({ jobs, selectedSkills }) => {
+const JobList: React.FC<JobListProps> = ({ 
+  jobs, 
+  selectedSkills,
+  isLoading = false,
+  error = null
+}) => {
   const [matchedJobs, setMatchedJobs] = useState<Job[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   
   useEffect(() => {
-    if (selectedSkills.length > 0) {
-      setIsLoading(true);
-      
-      // Simulate API call with delay
-      const timer = setTimeout(() => {
-        const filtered = getMatchingJobs(jobs, selectedSkills);
-        setMatchedJobs(filtered);
-        setIsLoading(false);
-      }, 600);
-      
-      return () => clearTimeout(timer);
+    if (selectedSkills.length > 0 && jobs.length > 0) {
+      const filtered = getMatchingJobs(jobs, selectedSkills);
+      setMatchedJobs(filtered);
     } else {
       setMatchedJobs([]);
     }
@@ -84,6 +82,22 @@ const JobList: React.FC<JobListProps> = ({ jobs, selectedSkills }) => {
   if (isLoading) {
     return (
       <div className="max-w-3xl mx-auto px-6 md:px-0">
+        <div className="text-center py-12">
+          <motion.div
+            className="inline-flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Loader2 
+              className="w-8 h-8 text-primary animate-spin" 
+              strokeWidth={1.5}
+            />
+            <span className="ml-3 text-muted-foreground">
+              Searching for matching jobs...
+            </span>
+          </motion.div>
+        </div>
         <div className="grid gap-4 md:gap-6">
           {[1, 2, 3].map((i) => (
             <motion.div 
@@ -96,6 +110,49 @@ const JobList: React.FC<JobListProps> = ({ jobs, selectedSkills }) => {
           ))}
         </div>
       </div>
+    );
+  }
+  
+  // Show error state
+  if (error) {
+    return (
+      <motion.div 
+        className="text-center py-16 px-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="max-w-md mx-auto">
+          <motion.div 
+            className="glass-darker rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 bg-destructive/10"
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <AlertCircle
+              size={40}
+              className="text-destructive"
+              strokeWidth={1.5}
+            />
+          </motion.div>
+          <motion.h2 
+            className="text-xl font-semibold mb-3"
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            Error loading jobs
+          </motion.h2>
+          <motion.p 
+            className="text-muted-foreground text-sm"
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            {error}
+          </motion.p>
+        </div>
+      </motion.div>
     );
   }
   
