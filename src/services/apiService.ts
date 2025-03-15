@@ -32,6 +32,7 @@ export const fetchJobsFromIndeed = async (keywords: string[]): Promise<Job[]> =>
       description: job.description,
       salary: job.salary || "Competitive",
       skills: job.skills || keywords, // If API doesn't provide skills, use keywords
+      date: job.postDate || new Date().toISOString().split('T')[0],
       postDate: job.postDate || new Date().toISOString(),
       applyUrl: job.applyUrl || "#"
     }));
@@ -81,6 +82,7 @@ export const fetchJobDetails = async (jobId: string): Promise<Job | null> => {
       description: response.data.description,
       salary: response.data.salary || "Competitive",
       skills: response.data.skills || [],
+      date: response.data.postDate || new Date().toISOString().split('T')[0],
       postDate: response.data.postDate || new Date().toISOString(),
       applyUrl: response.data.applyUrl || "#"
     };

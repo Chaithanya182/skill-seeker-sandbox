@@ -8,6 +8,9 @@ export interface Job {
   skills: string[];
   date: string;
   relevance?: number;
+  salary?: string;
+  postDate?: string;
+  applyUrl?: string;
 }
 
 export const mockJobs: Job[] = [
