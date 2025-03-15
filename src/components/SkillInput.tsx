@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Plus, Search } from "lucide-react";
@@ -182,7 +183,7 @@ const SkillInput: React.FC<SkillInputProps> = ({ selectedSkills, setSelectedSkil
                   suggestions.map((suggestion, idx) => (
                     <motion.li
                       key={suggestion}
-                      className="px-4 py-2 hover:bg-secondary/80 cursor-pointer text-sm flex items-center"
+                      className="px-4 py-2 cursor-pointer text-sm flex items-center transition-colors"
                       onClick={() => handleSuggestionClick(suggestion)}
                       initial={{ opacity: 0, x: -5 }}
                       animate={{ opacity: 1, x: 0 }}
